@@ -45,6 +45,7 @@ class ZebraCalendar extends StatefulWidget with CalendarController {
 class _ZebraCalendarState extends State<ZebraCalendar> {
   @override
   initState() {
+    _currentMonthYear = widget.initDate;
     _initMonth(_currentMonthYear);
     super.initState();
   }
