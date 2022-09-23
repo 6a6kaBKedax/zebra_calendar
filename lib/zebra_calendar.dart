@@ -6,13 +6,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quiver/time.dart';
 
 /// A ZebraCalendar.
-class ZebraCalendar extends StatefulWidget with CalendarController {
+class ZebraCalendar extends StatefulWidget  {
   ZebraCalendar({
     super.key,
     initDate,
     this.availableDates,
     this.onTap,
-    this.controller,
     this.min,
     this.max,
     this.textStyle,
@@ -34,7 +33,6 @@ class ZebraCalendar extends StatefulWidget with CalendarController {
   final Widget Function(DateTime? date, int index)? customBuilder;
   final List<DateTime>? availableDates;
   final Function(DateTime)? onTap;
-  final CalendarController? controller;
   final DateTime? min;
   final DateTime? max;
 
@@ -42,7 +40,7 @@ class ZebraCalendar extends StatefulWidget with CalendarController {
   State<ZebraCalendar> createState() => _ZebraCalendarState();
 }
 
-class _ZebraCalendarState extends State<ZebraCalendar> {
+class _ZebraCalendarState extends State<ZebraCalendar> with CalendarController {
   @override
   initState() {
     _currentMonthYear = widget.initDate;
