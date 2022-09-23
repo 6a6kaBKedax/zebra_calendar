@@ -17,7 +17,7 @@ class ZebraCalendar extends StatefulWidget {
     this.textStyle,
     this.removeDayNames = false,
     this.customBuilder,
-    this.initCalendarController,
+    this.controller,
   }) {
     textStyle ??= GoogleFonts.roboto(
       fontWeight: FontWeight.w400,
@@ -36,19 +36,19 @@ class ZebraCalendar extends StatefulWidget {
   final Function(DateTime)? onTap;
   final DateTime? min;
   final DateTime? max;
-  final Function(CalendarController)? initCalendarController;
+  final CalendarController? controller;
 
   @override
   State<ZebraCalendar> createState() => _ZebraCalendarState();
 }
 
-class _ZebraCalendarState extends State<ZebraCalendar> with CalendarController {
+class _ZebraCalendarState extends State<ZebraCalendar>  {
   @override
   initState() {
     _currentMonthYear = widget.initDate;
     _initMonth(_currentMonthYear);
-    if(widget.initCalendarController != null){
-      widget.initCalendarController!(CalendarController());
+    if(widget.controller != null){
+      widget.controller;
     }
     super.initState();
   }
@@ -166,14 +166,8 @@ class _ZebraCalendarState extends State<ZebraCalendar> with CalendarController {
   }
 }
 
-class CalendarController {
-  void nextMonth() {}
+class CalendarController extends ZebraCalendar {
 
-  void previousMonth() {}
-
-  DateTime currentCalendarData() {
-    return DateTime.now();
-  }
 }
 
 class _DayWidget extends StatelessWidget {
