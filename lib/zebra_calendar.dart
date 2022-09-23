@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quiver/time.dart';
 
 /// A ZebraCalendar.
-class ZebraCalendar extends StatefulWidget  {
+class ZebraCalendar extends StatefulWidget {
   ZebraCalendar({
     super.key,
     initDate,
@@ -17,6 +17,7 @@ class ZebraCalendar extends StatefulWidget  {
     this.textStyle,
     this.removeDayNames = false,
     this.customBuilder,
+    this.initCalendarController,
   }) {
     textStyle ??= GoogleFonts.roboto(
       fontWeight: FontWeight.w400,
@@ -35,6 +36,7 @@ class ZebraCalendar extends StatefulWidget  {
   final Function(DateTime)? onTap;
   final DateTime? min;
   final DateTime? max;
+  final Function(CalendarController)? initCalendarController;
 
   @override
   State<ZebraCalendar> createState() => _ZebraCalendarState();
@@ -45,6 +47,9 @@ class _ZebraCalendarState extends State<ZebraCalendar> with CalendarController {
   initState() {
     _currentMonthYear = widget.initDate;
     _initMonth(_currentMonthYear);
+    if(widget.initCalendarController != null){
+      widget.initCalendarController!(CalendarController());
+    }
     super.initState();
   }
 
