@@ -27,9 +27,9 @@ class ZebraCalendar extends StatelessWidget {
     _initCurrentMonth();
   }
 
-  late final DateTime initDate;
-  late final TextStyle? textStyle;
-  late final bool removeDayNames;
+  late DateTime initDate;
+  late TextStyle? textStyle;
+  late bool removeDayNames;
 
   final List<DateTime>? availableDates;
   final List<DateTime>? notAvailableDates;
