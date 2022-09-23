@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quiver/time.dart';
 
 /// A ZebraCalendar.
-class ZebraCalendar extends StatelessWidget with CalendarController {
+class ZebraCalendar extends StatefulWidget with CalendarController {
   ZebraCalendar({
     super.key,
     initDate,
@@ -25,9 +25,6 @@ class ZebraCalendar extends StatelessWidget with CalendarController {
       color: const Color(0xFF202020),
     );
     this.initDate = initDate ?? DateTime.now();
-    _currentMonthYear = initDate ?? DateTime.now();
-    _initMonth(_currentMonthYear);
-    _initController(controller);
   }
 
   late DateTime initDate;
@@ -41,9 +38,19 @@ class ZebraCalendar extends StatelessWidget with CalendarController {
   final DateTime? min;
   final DateTime? max;
 
-  late final List<Widget> days;
+  @override
+  State<ZebraCalendar> createState() => _ZebraCalendarState();
+}
+
+class _ZebraCalendarState extends State<ZebraCalendar> {
+  @override
+  initState() {
+    _initMonth(_currentMonthYear);
+    super.initState();
+  }
 
   late DateTime _currentMonthYear;
+  late final List<Widget> days;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +67,9 @@ class ZebraCalendar extends StatelessWidget with CalendarController {
   }
 
   void _nextMonth() {
-    if (max != null && _currentMonthYear.year == max!.year && _currentMonthYear.month == max!.month) {
+    if (widget.max != null &&
+        _currentMonthYear.year == widget.max!.year &&
+        _currentMonthYear.month == widget.max!.month) {
       return;
     }
     late DateTime nextDate;
@@ -72,10 +81,13 @@ class ZebraCalendar extends StatelessWidget with CalendarController {
       _currentMonthYear = nextDate;
     }
     _initMonth(_currentMonthYear);
+    setState(() {});
   }
 
   void _previousMonth() {
-    if (min != null && _currentMonthYear.year == min!.year && _currentMonthYear.month == min!.month) {
+    if (widget.min != null &&
+        _currentMonthYear.year == widget.min!.year &&
+        _currentMonthYear.month == widget.min!.month) {
       return;
     }
     late DateTime nextDate;
@@ -87,6 +99,7 @@ class ZebraCalendar extends StatelessWidget with CalendarController {
       _currentMonthYear = nextDate;
     }
     _initMonth(_currentMonthYear);
+    setState(() {});
   }
 
   void _initMonth(DateTime input) {
@@ -100,42 +113,36 @@ class ZebraCalendar extends StatelessWidget with CalendarController {
     for (int i = 1; i <= numberDaysInMonth; i++) {
       shuffledList.add(DateTime(input.year, input.month, i));
     }
-    if (customBuilder != null) {
+    if (widget.customBuilder != null) {
       for (int i = 0; i < shuffledList.length; i++) {
-        customBuilder!(shuffledList[i], i);
+        widget.customBuilder!(shuffledList[i], i);
       }
     } else {
       days = shuffledList.map((e) {
         if (e == null) {
           return const SizedBox();
         } else {
-          if (availableDates != null && availableDates!.contains(e)) {
+          if (widget.availableDates != null && widget.availableDates!.contains(e)) {
             return _DayWidget(
               available: true,
               dayData: e,
-              onTap: onTap,
+              onTap: widget.onTap,
             );
-          } else if (availableDates != null) {
+          } else if (widget.availableDates != null) {
             return _DayWidget(
               available: false,
               dayData: e,
-              onTap: onTap,
+              onTap: widget.onTap,
             );
           } else {
             return _DayWidget(
               available: true,
               dayData: e,
-              onTap: onTap,
+              onTap: widget.onTap,
             );
           }
         }
       }).toList();
-    }
-  }
-
-  void _initController(CalendarController? controller) {
-    if (controller != null) {
-      controller.nextMonth;
     }
   }
 
