@@ -1,12 +1,13 @@
 library zebra_calendar;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quiver/time.dart';
+import 'package:provider/provider.dart';
+import 'package:zebra_calendar/calendar_controller.dart';
 
 /// A ZebraCalendar.
-class ZebraCalendar extends StatefulWidget {
+class ZebraCalendar extends StatelessWidget {
   ZebraCalendar({
     super.key,
     initDate,
@@ -39,135 +40,35 @@ class ZebraCalendar extends StatefulWidget {
   final CalendarController? controller;
 
   @override
-  State<ZebraCalendar> createState() => _ZebraCalendarState();
-}
-
-class _ZebraCalendarState extends State<ZebraCalendar>  {
-  @override
-  initState() {
-    _currentMonthYear = widget.initDate;
-    _initMonth(_currentMonthYear);
-    if(widget.controller != null){
-      widget.controller;
-    }
-    super.initState();
-  }
-
-  late DateTime _currentMonthYear;
-  late final List<Widget> days;
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        GridView.count(
-          crossAxisCount: 7,
-          shrinkWrap: true,
-          childAspectRatio: 2.5 / 3,
-          children: days,
-        ),
-      ],
+    return Provider(
+      create: (BuildContext context) => controller ?? CalendarController(),
+      child: Builder(builder: (context) {
+        final provider = Provider.of<CalendarController>(context);
+        provider.initController(initDate: initDate, availableDates: availableDates, max: max, min: min);
+        return Column(
+          children: <Widget>[
+            GridView.count(
+              crossAxisCount: 7,
+              shrinkWrap: true,
+              childAspectRatio: 2.5 / 3,
+              children: provider.days
+                  .map(
+                    (e) => e == null
+                        ? const SizedBox()
+                        : _DayWidget(
+                            available: e.available ?? true,
+                            dayData: e.dayData,
+                            onTap: onTap,
+                          ),
+                  )
+                  .toList(),
+            ),
+          ],
+        );
+      }),
     );
   }
-
-  void _nextMonth() {
-    if (widget.max != null &&
-        _currentMonthYear.year == widget.max!.year &&
-        _currentMonthYear.month == widget.max!.month) {
-      return;
-    }
-    late DateTime nextDate;
-    if (_currentMonthYear.month == 12) {
-      nextDate = DateTime(_currentMonthYear.year + 1, 1, _currentMonthYear.day);
-      _currentMonthYear = nextDate;
-    } else {
-      nextDate = DateTime(_currentMonthYear.year, _currentMonthYear.month + 1, _currentMonthYear.day);
-      _currentMonthYear = nextDate;
-    }
-    _initMonth(_currentMonthYear);
-    setState(() {});
-  }
-
-  void _previousMonth() {
-    if (widget.min != null &&
-        _currentMonthYear.year == widget.min!.year &&
-        _currentMonthYear.month == widget.min!.month) {
-      return;
-    }
-    late DateTime nextDate;
-    if (_currentMonthYear.month == 1) {
-      nextDate = DateTime(_currentMonthYear.year - 1, 12, _currentMonthYear.day);
-      _currentMonthYear = nextDate;
-    } else {
-      nextDate = DateTime(_currentMonthYear.year, _currentMonthYear.month - 1, _currentMonthYear.day);
-      _currentMonthYear = nextDate;
-    }
-    _initMonth(_currentMonthYear);
-    setState(() {});
-  }
-
-  void _initMonth(DateTime input) {
-    int numberDaysInMonth = daysInMonth(input.year, input.month);
-    int dayOfWeekInFirstDate = DateTime(input.year, input.month, 1).weekday;
-    List<DateTime?> shuffledList = [];
-    while (dayOfWeekInFirstDate != 1) {
-      shuffledList.add(null);
-      dayOfWeekInFirstDate--;
-    }
-    for (int i = 1; i <= numberDaysInMonth; i++) {
-      shuffledList.add(DateTime(input.year, input.month, i));
-    }
-    if (widget.customBuilder != null) {
-      for (int i = 0; i < shuffledList.length; i++) {
-        widget.customBuilder!(shuffledList[i], i);
-      }
-    } else {
-      days = shuffledList.map((e) {
-        if (e == null) {
-          return const SizedBox();
-        } else {
-          if (widget.availableDates != null && widget.availableDates!.contains(e)) {
-            return _DayWidget(
-              available: true,
-              dayData: e,
-              onTap: widget.onTap,
-            );
-          } else if (widget.availableDates != null) {
-            return _DayWidget(
-              available: false,
-              dayData: e,
-              onTap: widget.onTap,
-            );
-          } else {
-            return _DayWidget(
-              available: true,
-              dayData: e,
-              onTap: widget.onTap,
-            );
-          }
-        }
-      }).toList();
-    }
-  }
-
-  @override
-  void nextMonth() {
-    _nextMonth();
-  }
-
-  @override
-  void previousMonth() {
-    _previousMonth();
-  }
-
-  @override
-  DateTime currentCalendarData() {
-    return _currentMonthYear;
-  }
-}
-
-class CalendarController extends ZebraCalendar {
-
 }
 
 class _DayWidget extends StatelessWidget {
