@@ -2,7 +2,6 @@ library zebra_calendar;
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quiver/time.dart';
 import 'package:provider/provider.dart';
 import 'package:zebra_calendar/calendar_controller.dart';
 
@@ -65,18 +64,83 @@ class ZebraCalendar extends StatelessWidget {
             GridView.count(
               crossAxisCount: 7,
               shrinkWrap: true,
-              childAspectRatio: 2.5 / 3,
-              children: provider.days
-                  .map(
-                    (e) => e == null
-                        ? const SizedBox()
-                        : _DayWidget(
-                            available: e.available ?? true,
-                            dayData: e.dayData,
-                            onTap: onTap,
+              childAspectRatio: 2.6 / 3,
+              children: [
+                ...removeDayNames
+                    ? [const SizedBox()]
+                    : [
+                        Text(
+                          'Mo',
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20.0,
+                            color: const Color(0xFF202020),
                           ),
-                  )
-                  .toList(),
+                        ),
+                        Text(
+                          'Tu',
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20.0,
+                            color: const Color(0xFF202020),
+                          ),
+                        ),
+                        Text(
+                          'We',
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20.0,
+                            color: const Color(0xFF202020),
+                          ),
+                        ),
+                        Text(
+                          'Th',
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20.0,
+                            color: const Color(0xFF202020),
+                          ),
+                        ),
+                        Text(
+                          'Fr',
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20.0,
+                            color: const Color(0xFF202020),
+                          ),
+                        ),
+                        Text(
+                          'Sa',
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20.0,
+                            color: const Color(0xFF202020),
+                          ),
+                        ),
+                        Text(
+                          'Su',
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20.0,
+                            color: const Color(0xFF202020),
+                          ),
+                        ),
+                      ],
+                ...customBuilder != null
+                    ? provider.days.map((e) => customBuilder!(e?.dayData, provider.days.indexOf(e))).toList()
+                    : provider.days
+                        .map(
+                          (e) => e == null
+                              ? const SizedBox()
+                              : _DayWidget(
+                                  available: e.available ?? true,
+                                  textStyle: textStyle!,
+                                  dayData: e.dayData,
+                                  onTap: onTap,
+                                ),
+                        )
+                        .toList(),
+              ],
             ),
           ],
         );
@@ -89,10 +153,12 @@ class _DayWidget extends StatelessWidget {
   const _DayWidget({
     Key? key,
     required this.available,
+    required this.textStyle,
     required this.dayData,
     this.onTap,
   }) : super(key: key);
   final bool available;
+  final TextStyle textStyle;
   final DateTime dayData;
   final Function(DateTime)? onTap;
 
@@ -114,11 +180,7 @@ class _DayWidget extends StatelessWidget {
             child: Text(
               dayData.day.toString(),
               style: available
-                  ? GoogleFonts.roboto(
-                      color: const Color(0xFF202020),
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w600,
-                    )
+                  ? textStyle
                   : GoogleFonts.roboto(
                       color: const Color(0xFF8E8E8E),
                       fontSize: 16.0,
