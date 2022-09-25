@@ -13,7 +13,7 @@ class CalendarController extends ChangeNotifier {
 
   late DateTime? max;
   late DateTime? min;
-  late final List<DateTime>? availableDates;
+  late List<DateTime>? availableDates;
 
   void initController({required DateTime initDate, DateTime? max, DateTime? min, List<DateTime>? availableDates}) {
     this.max = max;
