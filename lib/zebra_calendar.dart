@@ -20,7 +20,7 @@ class ZebraCalendar extends StatelessWidget {
     this.controller,
   }) {
     textStyle ??= GoogleFonts.roboto(
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w600,
       fontSize: 16.0,
       color: const Color(0xFF202020),
     );
