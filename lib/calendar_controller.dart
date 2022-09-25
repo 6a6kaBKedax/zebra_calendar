@@ -11,8 +11,8 @@ class CalendarController extends ChangeNotifier {
 
   List<DayModel?> get days => _days;
 
-  late final DateTime? max;
-  late final DateTime? min;
+  late DateTime? max;
+  late DateTime? min;
   late final List<DateTime>? availableDates;
 
   void initController({required DateTime initDate, DateTime? max, DateTime? min, List<DateTime>? availableDates}) {
@@ -64,7 +64,7 @@ class CalendarController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _nextMonth() {
+  void nextMonth() {
     if (_currentMonthYear.year == max!.year && _currentMonthYear.month == max!.month) {
       return;
     }
@@ -79,7 +79,7 @@ class CalendarController extends ChangeNotifier {
     _initMonth(_currentMonthYear);
   }
 
-  void _previousMonth() {
+  void previousMonth() {
     if (min != null && _currentMonthYear.year == min!.year && _currentMonthYear.month == min!.month) {
       return;
     }
