@@ -3,7 +3,7 @@ import 'package:quiver/time.dart';
 import 'package:zebra_calendar/models/day_model.dart';
 
 class CalendarController extends ChangeNotifier {
-  late DateTime _currentMonthYear;
+  DateTime _currentMonthYear = DateTime.now();
 
   DateTime get currentMountYear => _currentMonthYear;
 
@@ -11,14 +11,20 @@ class CalendarController extends ChangeNotifier {
 
   List<DayModel?> get days => _days;
 
-  late DateTime? max;
-  late DateTime? min;
-  late List<DateTime>? availableDates;
+  late DateTime? _max;
+
+  DateTime? get max => _max;
+
+  late DateTime? _min;
+
+  DateTime? get min => _min;
+
+  late List<DateTime>? _availableDates;
 
   void initController({required DateTime initDate, DateTime? max, DateTime? min, List<DateTime>? availableDates}) {
-    this.max = max;
-    this.min = min;
-    this.availableDates = availableDates;
+    _max = max;
+    _min = min;
+    _availableDates = availableDates;
     _currentMonthYear = initDate;
     _initMonth(_currentMonthYear);
   }
@@ -43,12 +49,12 @@ class CalendarController extends ChangeNotifier {
       if (e == null) {
         return null;
       } else {
-        if (availableDates != null && availableDates!.contains(e)) {
+        if (_availableDates != null && _availableDates!.contains(e)) {
           return DayModel(
             available: true,
             dayData: e,
           );
-        } else if (availableDates != null) {
+        } else if (_availableDates != null) {
           return DayModel(
             available: false,
             dayData: e,
@@ -65,7 +71,7 @@ class CalendarController extends ChangeNotifier {
   }
 
   void nextMonth() {
-    if (max != null && _currentMonthYear.year == max!.year && _currentMonthYear.month == max!.month) {
+    if (_max != null && _currentMonthYear.year == _max!.year && _currentMonthYear.month == _max!.month) {
       return;
     }
     late DateTime nextDate;
@@ -80,7 +86,10 @@ class CalendarController extends ChangeNotifier {
   }
 
   void previousMonth() {
-    if (min != null && min != null && _currentMonthYear.year == min!.year && _currentMonthYear.month == min!.month) {
+    if (_min != null &&
+        _min != null &&
+        _currentMonthYear.year == _min!.year &&
+        _currentMonthYear.month == _min!.month) {
       return;
     }
     late DateTime nextDate;
