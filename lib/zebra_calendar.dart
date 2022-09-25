@@ -41,14 +41,15 @@ class ZebraCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<CalendarController>(
-      create: (BuildContext context) => controller != null
+      create: (BuildContext context) =>
+      controller != null
           ? (controller!
-            ..initController(
-              initDate: initDate,
-              availableDates: availableDates,
-              max: max,
-              min: min,
-            ))
+        ..initController(
+          initDate: initDate,
+          availableDates: availableDates,
+          max: max,
+          min: min,
+        ))
           : CalendarController()
         ..initController(
           initDate: initDate,
@@ -69,83 +70,49 @@ class ZebraCalendar extends StatelessWidget {
                 ...removeDayNames
                     ? [const SizedBox()]
                     : [
-                        Text(
-                          'Mo',
-                          style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 20.0,
-                            color: const Color(0xFF202020),
-                          ),
-                        ),
-                        Text(
-                          'Tu',
-                          style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 20.0,
-                            color: const Color(0xFF202020),
-                          ),
-                        ),
-                        Text(
-                          'We',
-                          style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 20.0,
-                            color: const Color(0xFF202020),
-                          ),
-                        ),
-                        Text(
-                          'Th',
-                          style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 20.0,
-                            color: const Color(0xFF202020),
-                          ),
-                        ),
-                        Text(
-                          'Fr',
-                          style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 20.0,
-                            color: const Color(0xFF202020),
-                          ),
-                        ),
-                        Text(
-                          'Sa',
-                          style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 20.0,
-                            color: const Color(0xFF202020),
-                          ),
-                        ),
-                        Text(
-                          'Su',
-                          style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 20.0,
-                            color: const Color(0xFF202020),
-                          ),
-                        ),
-                      ],
+                  _weekday('Mo'),
+                  _weekday('Tu'),
+                  _weekday('We'),
+                  _weekday('Th'),
+                  _weekday('Fr'),
+                  _weekday('Sa'),
+                  _weekday('Su'),
+                ],
                 ...customBuilder != null
                     ? provider.days.map((e) => customBuilder!(e?.dayData, provider.days.indexOf(e))).toList()
                     : provider.days
-                        .map(
-                          (e) => e == null
-                              ? const SizedBox()
-                              : _DayWidget(
-                                  available: e.available ?? true,
-                                  textStyle: textStyle!,
-                                  dayData: e.dayData,
-                                  onTap: onTap,
-                                ),
-                        )
-                        .toList(),
+                    .map(
+                      (e) =>
+                  e == null
+                      ? const SizedBox()
+                      : _DayWidget(
+                    available: e.available ?? true,
+                    textStyle: textStyle!,
+                    dayData: e.dayData,
+                    onTap: onTap,
+                  ),
+                )
+                    .toList(),
               ],
             ),
           ],
         );
       }),
     );
+  }
+
+  Widget _weekday(String weekday) {
+    return Align(
+      alignment: Alignment.center,
+      child: Text(
+        weekday,
+        style: GoogleFonts.roboto(
+          fontWeight: FontWeight.w400,
+          fontSize: 16.0,
+          color: const Color(0xFF202020),
+        ),
+      ),
+    )
   }
 }
 
@@ -182,10 +149,10 @@ class _DayWidget extends StatelessWidget {
               style: available
                   ? textStyle
                   : GoogleFonts.roboto(
-                      color: const Color(0xFF8E8E8E),
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w400,
-                    ),
+                color: const Color(0xFF8E8E8E),
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ),
