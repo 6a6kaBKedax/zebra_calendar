@@ -112,7 +112,7 @@ class ZebraCalendar extends StatelessWidget {
           color: const Color(0xFF202020),
         ),
       ),
-    )
+    );
   }
 }
 
