@@ -41,11 +41,25 @@ class ZebraCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (BuildContext context) => controller ?? CalendarController(),
+    return ChangeNotifierProvider<CalendarController>(
+      create: (BuildContext context) => controller != null
+          ? (controller!
+            ..initController(
+              initDate: initDate,
+              availableDates: availableDates,
+              max: max,
+              min: min,
+            ))
+          : CalendarController()
+        ..initController(
+          initDate: initDate,
+          availableDates: availableDates,
+          max: max,
+          min: min,
+        ),
       child: Builder(builder: (context) {
         final provider = Provider.of<CalendarController>(context);
-        provider.initController(initDate: initDate, availableDates: availableDates, max: max, min: min);
+        //provider.initController(initDate: initDate, availableDates: availableDates, max: max, min: min);
         return Column(
           children: <Widget>[
             GridView.count(
