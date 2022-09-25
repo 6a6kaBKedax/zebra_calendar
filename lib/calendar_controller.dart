@@ -65,7 +65,7 @@ class CalendarController extends ChangeNotifier {
   }
 
   void nextMonth() {
-    if (_currentMonthYear.year == max!.year && _currentMonthYear.month == max!.month) {
+    if (max != null && _currentMonthYear.year == max!.year && _currentMonthYear.month == max!.month) {
       return;
     }
     late DateTime nextDate;
@@ -80,7 +80,7 @@ class CalendarController extends ChangeNotifier {
   }
 
   void previousMonth() {
-    if (min != null && _currentMonthYear.year == min!.year && _currentMonthYear.month == min!.month) {
+    if (min != null && min != null && _currentMonthYear.year == min!.year && _currentMonthYear.month == min!.month) {
       return;
     }
     late DateTime nextDate;
