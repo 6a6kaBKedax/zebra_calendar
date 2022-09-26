@@ -49,7 +49,9 @@ class CalendarController extends ChangeNotifier {
       if (e == null) {
         return null;
       } else {
-        if (_availableDates != null && _availableDates!.contains(e)) {
+        if (_availableDates != null &&
+            _availableDates!.indexWhere((val) => e.year == val.year && e.month == val.month && e.day == val.day) !=
+                -1) {
           return DayModel(
             available: true,
             dayData: e,

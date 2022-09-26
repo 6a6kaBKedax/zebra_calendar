@@ -139,7 +139,7 @@ class _DayWidget extends StatelessWidget {
         Expanded(
           child: InkWell(
             onTap: () {
-              if (onTap != null) onTap!(dayData);
+              if (onTap != null && available) onTap!(dayData);
             },
             child: Align(
               alignment: Alignment.center,
