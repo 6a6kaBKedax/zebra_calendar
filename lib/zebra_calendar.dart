@@ -8,7 +8,7 @@ import 'package:zebra_calendar/calendar_controller.dart';
 /// A ZebraCalendar.
 class ZebraCalendar extends StatelessWidget {
   ZebraCalendar({
-    super.key,
+    Key? key,
     initDate,
     this.availableDates,
     this.onTap,
@@ -18,7 +18,7 @@ class ZebraCalendar extends StatelessWidget {
     this.removeDayNames = false,
     this.customBuilder,
     this.controller,
-  }) {
+  }) : super(key: key) {
     textStyle ??= GoogleFonts.roboto(
       fontWeight: FontWeight.w600,
       fontSize: 16.0,
