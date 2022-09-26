@@ -138,18 +138,21 @@ class _DayWidget extends StatelessWidget {
           height: 1.0,
           color: Color(0xFFBBBBBB),
         ),
-        InkWell(
-          onTap: () {
-            if (onTap != null) onTap!(dayData);
-          },
-          child: Text(
-            dayData.day.toString(),
-            style: available
-                ? textStyle
-                : GoogleFonts.roboto(
-              color: const Color(0xFF8E8E8E),
-              fontSize: 16.0,
-              fontWeight: FontWeight.w400,
+        Align(
+          alignment: Alignment.center,
+          child: InkWell(
+            onTap: () {
+              if (onTap != null) onTap!(dayData);
+            },
+            child: Text(
+              dayData.day.toString(),
+              style: available
+                  ? textStyle
+                  : GoogleFonts.roboto(
+                color: const Color(0xFF8E8E8E),
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ),
