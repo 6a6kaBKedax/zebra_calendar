@@ -142,17 +142,14 @@ class _DayWidget extends StatelessWidget {
           onTap: () {
             if (onTap != null) onTap!(dayData);
           },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
-            child: Text(
-              dayData.day.toString(),
-              style: available
-                  ? textStyle
-                  : GoogleFonts.roboto(
-                color: const Color(0xFF8E8E8E),
-                fontSize: 16.0,
-                fontWeight: FontWeight.w400,
-              ),
+          child: Text(
+            dayData.day.toString(),
+            style: available
+                ? textStyle
+                : GoogleFonts.roboto(
+              color: const Color(0xFF8E8E8E),
+              fontSize: 16.0,
+              fontWeight: FontWeight.w400,
             ),
           ),
         ),
