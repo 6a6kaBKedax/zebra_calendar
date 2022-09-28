@@ -14,12 +14,14 @@ class ZebraCalendar extends StatelessWidget {
     this.onTap,
     this.min,
     this.max,
-    this.textStyle,
+    this.textStyleAvailable,
+    this.textStyleNotAvailable,
+    this.textStyleWeekdays,
     this.removeDayNames = false,
     this.customBuilder,
     this.controller,
   }) : super(key: key) {
-    textStyle ??= GoogleFonts.roboto(
+    textStyleAvailable ??= GoogleFonts.roboto(
       fontWeight: FontWeight.w600,
       fontSize: 16.0,
       color: const Color(0xFF202020),
@@ -28,7 +30,7 @@ class ZebraCalendar extends StatelessWidget {
   }
 
   late DateTime initDate;
-  late TextStyle? textStyle;
+  late TextStyle? textStyleAvailable;
   late bool removeDayNames;
 
   final Widget Function(DateTime? date, int index)? customBuilder;
@@ -37,6 +39,8 @@ class ZebraCalendar extends StatelessWidget {
   final DateTime? min;
   final DateTime? max;
   final CalendarController? controller;
+  final TextStyle? textStyleNotAvailable;
+  final TextStyle? textStyleWeekdays;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +89,8 @@ class ZebraCalendar extends StatelessWidget {
                               ? const SizedBox()
                               : _DayWidget(
                                   available: e.available ?? true,
-                                  textStyle: textStyle!,
+                                  textStyle: textStyleAvailable!,
+                                  textStyleNotAvailable: textStyleNotAvailable,
                                   dayData: e.dayData,
                                   onTap: onTap,
                                 ),
@@ -104,11 +109,12 @@ class ZebraCalendar extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         weekday,
-        style: GoogleFonts.roboto(
-          fontWeight: FontWeight.w400,
-          fontSize: 16.0,
-          color: const Color(0xFF202020),
-        ),
+        style: textStyleWeekdays ??
+            GoogleFonts.roboto(
+              fontWeight: FontWeight.w400,
+              fontSize: 16.0,
+              color: const Color(0xFF202020),
+            ),
       ),
     );
   }
@@ -120,10 +126,12 @@ class _DayWidget extends StatelessWidget {
     required this.available,
     required this.textStyle,
     required this.dayData,
+    this.textStyleNotAvailable,
     this.onTap,
   }) : super(key: key);
   final bool available;
   final TextStyle textStyle;
+  final TextStyle? textStyleNotAvailable;
   final DateTime dayData;
   final Function(DateTime)? onTap;
 
@@ -147,11 +155,12 @@ class _DayWidget extends StatelessWidget {
                 dayData.day.toString(),
                 style: available
                     ? textStyle
-                    : GoogleFonts.roboto(
-                        color: const Color(0xFF8E8E8E),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    : textStyleNotAvailable ??
+                        GoogleFonts.roboto(
+                          color: const Color(0xFF8E8E8E),
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                        ),
               ),
             ),
           ),
